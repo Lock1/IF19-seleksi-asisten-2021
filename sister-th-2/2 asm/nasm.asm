@@ -1,5 +1,4 @@
 ; Rigged-NIM game inspired by Matt Parker :)
-
 global _start
 
 
@@ -14,7 +13,7 @@ _start:
 
 
 
-
+; input
 _bgets:
     push      rax
     push      rdx
@@ -33,7 +32,7 @@ _bgets:
     pop       rax
     ret
 
-
+; output
 _bputs:
     push      rax
     push      rdx
