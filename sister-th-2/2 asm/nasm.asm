@@ -1,3 +1,5 @@
+; Rigged-NIM game inspired by Matt Parker :)
+
 global _start
 
 
@@ -57,8 +59,8 @@ _bputs:
 _main:
     mov       rbp, rsp
     sub       rsp, 0x10
-    mov       byte [rsp], '9'
-    mov       rbx, 9            ; rbx -> c_counter
+    mov       byte [rsp], '8'
+    mov       rbx, 8            ; rbx -> c_counter
 
     mov       rbp, 0x10
 
@@ -104,19 +106,75 @@ _gameloop:
     mov       rsi, 1
     call      _bputs
 
-    mov       rdx, 0
-    cmp       bx, dx
+
+    ; bot section
+    cmp       r8, 1
+    jne       _user_take_2
+
+    sub       rbx, 3 ; c_counter -= 3
+    sub       byte [rsp], 3
+
+    ; puts()
+    mov       rdi, bot_t_3
+    mov       rsi, 15
+    call      _bputs
+
+    ; puts("\n")
+    mov       rdi, new_line
+    mov       rsi, 1
+    call      _bputs
+
+    jmp       _exitloop_cmp
+_user_take_2:
+    cmp       r8, 2
+    jne       _user_take_3
+
+    sub       rbx, 2 ; c_counter -= 2
+    sub       byte [rsp], 2
+
+    ; puts()
+    mov       rdi, bot_t_2
+    mov       rsi, 15
+    call      _bputs
+
+    ; puts("\n")
+    mov       rdi, new_line
+    mov       rsi, 1
+    call      _bputs
+
+    jmp       _exitloop_cmp
+_user_take_3:
+    sub       rbx, 1 ; c_counter -= 1
+    sub       byte [rsp], 1
+
+    ; puts()
+    mov       rdi, bot_t_1
+    mov       rsi, 15
+    call      _bputs
+
+    ; puts("\n")
+    mov       rdi, new_line
+    mov       rsi, 1
+    call      _bputs
+
+
+
+_exitloop_cmp:
+    cmp       bx, 0
     jg        _gameloop
-
-
-
 
     ; out from gameloop
     add       rsp, 0x10
 
-    ; mov       rdi, rsp
-    ; mov       rsi, 0x10
-    ; call      _bgets
+    ; puts()
+    mov       rdi, lose_message
+    mov       rsi, 13
+    call      _bputs
+
+    ; puts("\n")
+    mov       rdi, new_line
+    mov       rsi, 1
+    call      _bputs
     ret
 
 
@@ -132,6 +190,18 @@ coin_message:
 
 input_message:
     db        "Ambil (1, 2, 3): "
+
+bot_t_1:
+    db        "Bot mengambil 1"
+
+bot_t_2:
+    db        "Bot mengambil 2"
+
+bot_t_3:
+    db        "Bot mengambil 3"
+
+lose_message:
+    db        "Anda kalah :)"
 
 new_line:
     db        10
