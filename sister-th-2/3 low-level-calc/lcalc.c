@@ -5,6 +5,12 @@
 //      konstrain "... (termasuk pembuatan method yang mengembalikan nilai)"
 // Program menggunakan 6 register dan tidak mengimplementasikan akar, modulo, dan pangkat
 
+// Ketentuan register umum
+// r1 digunakan sebagai akumulator
+// r2 digunakan sebagai penyimpan 1 bilangan sementara
+// r3 & r4 direserve untuk kepentingan counter operasi aritmatika
+// r5 digunakan sebagai 1 digit sementara pada parsing
+// r6 digunakan sebagai penyimpanan operator pada parsing
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -479,11 +485,8 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
 
-    // Ketentuan parsing
-    // r1 digunakan sebagai akumulator
-    // r2 digunakan sebagai penyimpan 1 bilangan
-    // r5 digunakan sebagai digit sementara
-    // r6 digunakan sebagai penyimpanan operator
+
+
     while ((c = fgetc(file)) != EOF) {
         printf("%c", c);
         switch (c) {
