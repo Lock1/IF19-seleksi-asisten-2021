@@ -1,24 +1,30 @@
-// -- F language keywords --
-// + -> push
-// - -> pop
+// -- F language instruction --
+// Stack operator
+// + -> push register to stack
+// - -> pop stack and insert to register
 
-// ^ -> inc reg
-// v -> dec reg
+// Register operator
+// ^ -> increment register
+// v -> decrement register
 
+// I/O operator
 // o -> getchar(reg)
 // * -> putchar(reg)
 
-// x         -> set register to 0
-// { }       -> loop until _gl_condition is false
-// \r \n ' ' -> ignored character
-
-
-// _gl_condition operator
+// Conditional operator
 // < -> compare register & top stack, true if register is lower
 // > -> True if register is bigger
 // = -> True if register equal
 // # -> True if register not equal
 // T -> Always set _gl_condition = 1
+// F -> Always set _gl_condition = 0
+
+// Other operator
+// x         -> set register to 0
+// { }       -> while (_gl_condition)
+// \r \n ' ' -> ignored character
+// @         -> Set register = _gl_condition
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -69,6 +75,9 @@ void parse_token(char c) {
             case 'x':
                 _gl_lang_reg = 0;
                 break;
+            case '@':
+                _gl_lang_reg = _gl_condition;
+                break;
 
             // Conditional
             case '<':
@@ -85,6 +94,9 @@ void parse_token(char c) {
                 break;
             case 'T':
                 _gl_condition = 1;
+                break;
+            case 'F':
+                _gl_condition = 0;
                 break;
 
 
@@ -125,7 +137,7 @@ int main(int argc, char const *argv[]) {
         if (c != ' ' && c != '\n' && c != '\r') {
             switch (c) {
                 case START_BRACKET:
-                    if (_gl_stack.top_ptr > 0) {
+                    if (_gl_stack.top_ptr >= 0) {
                         char is_end_bracket_found = 0;
                         clear_buffer(_gl_int_buffer);
                         _gl_int_buf_pt = 0;
